@@ -32,8 +32,13 @@ void runRecipe(const char *event, const char *data)
     } else if (String(data) == "Recipe 2") {
         // do nothing
     } else if (String(data) == "Recipe 3") {
-        notificationTime = millis();
-        notificationOn = 1;
+        if (notificationOn) {
+            clearNotification();
+        }
+        else {
+            notificationTime = millis();
+            notificationOn = 1;
+        }
     } else if (String(data) == "Recipe 4") {
         // do nothing
     }
@@ -46,7 +51,7 @@ void loop() {
     }
     
     if (notificationOn) {
-        b.rainbow(11);
+        b.advanceRainbow(1, 11);
     }
     
     //check for button presses
@@ -56,12 +61,12 @@ void loop() {
             published = 1;                                  
         }
     } else if (b.buttonOn(2)) {
-         if(!published) {
+        if(!published) {
             Particle.publish("SupRecipe", "Recipe 2");
             published = 1;                                  
         }   
     } else if (b.buttonOn(3)) {
-         if(!published) {
+        if(!published) {
             Particle.publish("SupRecipe", "Recipe 3");
             published = 1;                                  
         }   
@@ -73,4 +78,3 @@ void loop() {
     }
     else {published = 0;} 
 }
-
